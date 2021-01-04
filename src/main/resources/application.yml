@@ -5,6 +5,3 @@ spring.datasource.password: ABC-def-123
 spring.jpa.hibernate.ddl-auto: update
 server:
   port : 5000
-java:
-  runtime:
-    version: 11
