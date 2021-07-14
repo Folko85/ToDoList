@@ -1,7 +1,7 @@
 spring.datasource.url: jdbc:mysql://tasks-db.cpkzsbaolaby.us-east-2.rds.amazonaws.com:3306/tasks?serverTimezone=Europe/Moscow
 spring.datasource.driver-class-name: com.mysql.cj.jdbc.Driver
 spring.datasource.username: root
-spring.datasource.password: ABC-def-123
+spring.datasource.password: ENC(A7zXVxrsy3ieThtvnJwaZHlaaHbjxswS)
 spring.jpa.hibernate.ddl-auto: update
 server:
   port : 5000
@@ -9,3 +9,7 @@ bot:
   botUserName: OtherToDoBot
   notToken: 1446227679:AAH2Dh0LN928g2R31aEkzKBg3po4Zd8KMPM
   webHookPath: https://b419f8dd.ngrok.io
+
+jasypt:
+  encryptor:
+    bean: encryptorBean
