@@ -12,7 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public abstract class AbstractIntegrationTest {
+public abstract class AbstractTest {
     /** Web application context. */
     @Autowired
     protected WebApplicationContext ctx;
