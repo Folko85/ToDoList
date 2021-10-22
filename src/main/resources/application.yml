@@ -1,8 +1,14 @@
-spring.datasource.url: jdbc:mysql://tasks-db.cpkzsbaolaby.us-east-2.rds.amazonaws.com:3306/tasks?serverTimezone=Europe/Moscow
-spring.datasource.driver-class-name: com.mysql.cj.jdbc.Driver
-spring.datasource.username: root
-spring.datasource.password: ENC(A7zXVxrsy3ieThtvnJwaZHlaaHbjxswS)
-spring.jpa.hibernate.ddl-auto: update
+spring:
+  datasource:
+    url: jdbc:postgresql://ec2-54-74-14-109.eu-west-1.compute.amazonaws.com:5432/db7o56opi8bm4
+    driver-class-name: org.postgresql.Driver
+    username: ENC(zK3DFE76Y4/a+DUf9a8AWz7gOs+DzCfh)
+    password: ENC(PYocPYLS0KkLQ7WbO8try7Y8H/sLzbASOx5jYyzF0NjqnYBhqWAmkwkx6rBH9IRiyzzeLD9OdFQl+hqUncYs13aP8W3E/Lh5LDXxQKccF90=)
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    change-log: classpath:db/changelog/changelog.yml
 server:
   port : 5000
 bot:
