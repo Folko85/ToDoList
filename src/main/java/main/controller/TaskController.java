@@ -1,12 +1,17 @@
 package main.controller;
 
-import main.mapper.TaskMapper;
 import main.dto.TaskModel;
+import main.mapper.TaskMapper;
+import main.repository.UserRepository;
 import main.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,9 +22,11 @@ public class TaskController {
 
     private final TaskService service;
 
-    @Autowired
-    public TaskController(TaskService service) {
+    private final UserRepository userRepository;
+
+    public TaskController(TaskService service, UserRepository userRepository) {
         this.service = service;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/")
@@ -38,13 +45,13 @@ public class TaskController {
 
     @PostMapping("/tasks")
     public String addTask(@Valid @RequestBody TaskModel task, Model model) {
-        service.save(TaskMapper.reverseMap(task));
+        service.save(TaskMapper.reverseMap(task, userRepository));
         return getTasks(model);
     }
 
     @PutMapping("/tasks")
     public String editTask(@Valid @RequestBody TaskModel task, Model model) {
-        service.save(TaskMapper.reverseMap(task));
+        service.save(TaskMapper.reverseMap(task, userRepository));
         return getTasks(model);
     }
 
