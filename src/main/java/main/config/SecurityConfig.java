@@ -34,10 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                     .anyRequest().hasAuthority(Role.USER.getAuthority())
                 .and()
                 .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/")
+                .permitAll()
                 .and()
-                .logout()
+                .logout().clearAuthentication(true).invalidateHttpSession(true)
                     .permitAll()
                     .logoutSuccessUrl("/login");
     }

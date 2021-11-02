@@ -3,8 +3,7 @@ const host = location.hostname;
 function getTasks(){
 	const promise = axios({
 	method:'get',
-      url: "/tasks",
-      responseType:'document'
+      url: "/api/tasks",
 	});
 	return promise.then((response) =>{
 		return response.data;
@@ -14,8 +13,7 @@ function getTasks(){
 function createTask(title){
 	const promise = axios({
 	method: 'post',
-    url: "/tasks",
-    responseType:'document',
+    url: "/api/tasks",
 	data : {
 		title : title
 		}
@@ -28,8 +26,7 @@ function createTask(title){
 function updateTask(title, id){
 	const promise = axios({
     method: 'put',
-    url: "/tasks",
-    responseType:'document',
+    url: "/api/tasks",
     data : {
         id : id,
         title : title
@@ -43,8 +40,7 @@ function updateTask(title, id){
 function deleteAllTasks(){
 	const promise = axios({
     method:'delete',
-    url: "/tasks",
-    responseType:'document'
+    url: "/api/tasks",
     	});
 	return promise.then((response) =>{
 		return response.data;
@@ -54,10 +50,20 @@ function deleteAllTasks(){
 function deleteTask(id){
 	const promise = axios({
     method:'delete',
-    url: "/tasks/" + id,
-    responseType:'document'
+    url: "/api/tasks/" + id,
       	});
 	return promise.then((response) =>{
 		return response.data;
 		});
 	}
+
+function logout(){
+    const promise = axios({
+	method:'get',
+	responseType:'document',
+    url: "/logout",
+	});
+	return promise.then((response) =>{
+		return response.data;
+		});
+}
