@@ -16,7 +16,7 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "user_tab")
+@Table(name = "user_tab", schema = "public")
 @Accessors(chain = true)
 public class User implements UserDetails {
 
