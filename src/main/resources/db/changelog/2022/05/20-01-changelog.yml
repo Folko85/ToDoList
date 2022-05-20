@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      author: m.gutorov
+      id: 2022052001
+      changes:
+        - addColumn:
+            tableName: user_tab
+            columns:
+              - column:
+                  name: firstname
+                  type: varchar(255)
+                  defaultOnNull: true
+                  defaultValue: Иван
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lastname
+                  type: varchar(255)
+                  defaultOnNull: true
+                  defaultValue: Иванов
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(50)
+                  defaultValue: USER
+                  defaultOnNull: true
+                  constraints:
+                    nullable: false
