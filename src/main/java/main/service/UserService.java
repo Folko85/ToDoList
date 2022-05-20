@@ -1,27 +1,21 @@
 package main.service;
 
+import lombok.AllArgsConstructor;
 import main.model.User;
 import main.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    @PersistenceContext
-    private EntityManager em;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public User findUserById(Long userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
@@ -39,7 +33,7 @@ public class UserService {
             return false;
         }
 
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
@@ -50,10 +44,5 @@ public class UserService {
             return true;
         }
         return false;
-    }
-
-    public List<User> usergtList(Long idMin) {
-        return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
-                .setParameter("paramId", idMin).getResultList();
     }
 }
