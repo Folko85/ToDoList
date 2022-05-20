@@ -1,24 +1,24 @@
 package main.config;
 
+import lombok.AllArgsConstructor;
 import main.model.Role;
-import main.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import main.service.UserSecurityService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+@AllArgsConstructor
+public class SecurityConfig extends AbstractHttpConfigurer<SecurityConfig, HttpSecurity> implements WebMvcConfigurer {
 
-    @Autowired
-    UserService userService;
+    private final UserSecurityService userService;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -26,24 +26,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/registration").not().fullyAuthenticated()
-                    .anyRequest().hasAuthority(Role.USER.getAuthority())
+                .antMatchers("/registration").not().fullyAuthenticated()
+                .anyRequest().hasAuthority(Role.USER.getAuthority())
                 .and()
                 .formLogin()
                 .permitAll()
                 .and()
                 .logout().clearAuthentication(true).invalidateHttpSession(true)
-                    .permitAll()
-                    .logoutSuccessUrl("/login");
+                .permitAll()
+                .logoutSuccessUrl("/login");
     }
 
-    @Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+    @Bean
+    protected DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userService);
+        return daoAuthenticationProvider;
     }
 
     @Bean
