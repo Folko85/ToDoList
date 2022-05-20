@@ -9,8 +9,10 @@ import main.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,10 +33,8 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task is not exist"));
     }
 
-    public List<Task> findAll() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetail = (UserDetails) auth.getPrincipal();
-        User user = userRepository.findByUsernameAndPassword(userDetail.getUsername(), userDetail.getPassword());
+    public List<Task> findAll(Principal principal) {
+        User user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("Нет такого пользователя"));
         return taskRepository.findAll().stream().filter(task -> task.getUser() != null)
                 .filter(t -> t.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());

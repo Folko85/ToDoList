@@ -1,3 +1,8 @@
 ﻿a {
     cursor: pointer;
 }
+
+.new-task {
+    width: 800px;
+    margin-right: 30px;
+}
