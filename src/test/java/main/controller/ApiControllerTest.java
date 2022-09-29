@@ -34,8 +34,7 @@ public class ApiControllerTest extends AbstractTest {
         test.setPassword("password");
 
         userRepository.save(test);
-        task = new Task("taskText");
-        task.setUser(test);
+        task = new Task().setTitle("taskText").setUser(test);
         taskRepository.save(task);
     }
 
@@ -82,7 +81,7 @@ public class ApiControllerTest extends AbstractTest {
     public void testAddTaskSuccess() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/tasks")
-                        .content(mapper.writeValueAsString(new Task("titleText")))   //постим задачу
+                        .content(mapper.writeValueAsString(new Task().setTitle("titleText")))   //постим задачу
                         .contentType(MediaType.APPLICATION_JSON)                          //тип на входе json
                         .accept(MediaType.APPLICATION_JSON))                              //вернуть должно json
                 .andExpect(MockMvcResultMatchers.status().isOk())                      //статус 200
@@ -94,7 +93,7 @@ public class ApiControllerTest extends AbstractTest {
     public void testAddTaskFailure() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/tasks")
-                        .content(mapper.writeValueAsString(new Task("")))   //постим задачу
+                        .content(mapper.writeValueAsString(new Task().setTitle("")))   //постим задачу
                         .contentType(MediaType.APPLICATION_JSON)                          //тип на входе json
                         .accept(MediaType.APPLICATION_JSON))                              //вернуть должно json
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())                      //статус 400
@@ -106,7 +105,7 @@ public class ApiControllerTest extends AbstractTest {
     public void testEditTaskSuccess() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/tasks")
-                        .content(mapper.writeValueAsString(new Task("newTitleText")))  //меняем текст на этот
+                        .content(mapper.writeValueAsString(new Task().setTitle("newTitleText")))  //меняем текст на этот
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -118,7 +117,7 @@ public class ApiControllerTest extends AbstractTest {
     public void testEditTaskFailure() throws Exception {   // в нашей реализации сделать так не выйдет, ну и фиг с ним
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/tasks")
-                        .content(mapper.writeValueAsString(new Task("")))  //меняем текст на этот
+                        .content(mapper.writeValueAsString(new Task().setTitle("")))  //меняем текст на этот
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
