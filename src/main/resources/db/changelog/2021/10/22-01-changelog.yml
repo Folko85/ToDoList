@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      author: m.gutorov
+      id: 2021102201
+      changes:
+        - createTable:
+            tableName: user_tab
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: varchar(255)
+              - column:
+                  name: password
+                  type: varchar(255)
+        - createSequence:
+            sequenceName: user_seq
+            startValue: 1
+        - createTable:
+            tableName: task_tab
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: date_time_of_create
+                  type: datetime
+              - column:
+                  name: title
+                  type: varchar(255)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: user_for_task
+                    referencedTableName: user_tab
+                    referencedColumnNames: id
+        - createSequence:
+            sequenceName: task_seq
+            startValue: 1

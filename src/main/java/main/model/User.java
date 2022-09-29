@@ -1,59 +1,43 @@
 package main.model;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+import main.model.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
+@Data
 @Entity
-@Table (name = "user_tab")
+@Table(name = "user_tab", schema = "public")
+@Accessors(chain = true)
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
 
+    private String firstname;
+
+    private String lastname;
+
+    @Column(columnDefinition = "varchar(50)")
+    private Role role;
+
     private String password;
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = new HashSet<Role>();
-        roles.add(Role.USER);
-        if (this.id == 1) {
-            roles.add(Role.MODERATOR);
-        }
-        return roles;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
+        return this.getRole().getAuthorities();
     }
 
     @Override

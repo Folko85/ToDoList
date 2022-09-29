@@ -1,0 +1,18 @@
+﻿<header style="text-align:center;">
+    <h1>Привет {{vm.user.firstname}}!</h1>
+    <h1>ToDoList</h1>
+</header>
+<table align="center" id="tasks-result" border="1"></table><br>
+<section class="controls ng-scope" style="display: flex;">
+    <textarea class="new-task"></textarea>
+    <button class="create-task">Отправить</button>
+    <br>
+</section><br>
+<form name="form" ng-submit="vm.logout()" role="form">
+    <div class="form-actions" align="center">
+        <button type="submit" class="btn btn-primary">Выход</button>
+    </div>
+</form>
+
+
+

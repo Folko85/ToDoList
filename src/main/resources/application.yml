@@ -4,8 +4,10 @@ spring:
     url: jdbc:sqlite:chat.db
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     database-platform: main.config.sqlite.SQLiteDialect
+  liquibase:
+    change-log: classpath:db/changelog/changelog.yml
 server:
   port : 5000
 bot:

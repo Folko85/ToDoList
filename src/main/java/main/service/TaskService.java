@@ -5,12 +5,14 @@ import main.exception.EntityNotFoundException;
 import main.model.Task;
 import main.model.User;
 import main.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import main.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,20 +22,21 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
-    @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    private final UserRepository userRepository;
+
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
     public Task findById(Long id) {
         return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task is not exist"));
     }
 
-    public List<Task> findAll() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User userDetail = (User) auth.getPrincipal();
+    public List<Task> findAll(Principal principal) {
+        User user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("Нет такого пользователя"));
         return taskRepository.findAll().stream().filter(task -> task.getUser() != null)
-                .filter(t -> t.getUser().getId().equals(userDetail.getId()))
+                .filter(t -> t.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -49,13 +52,14 @@ public class TaskService {
 
     public void deleteAll() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User userDetail = (User) auth.getPrincipal();
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        User user = userRepository.findByUsernameAndPassword(userDetail.getUsername(), userDetail.getPassword());
         List<Task> tasks = taskRepository.findAll().stream()
-                .filter(t -> t.getUser().getId().equals(userDetail.getId()))
+                .filter(t -> t.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());
         if (tasks.isEmpty()) {
             throw new EntityNotFoundException("Tasks is not exist");
-        } else{
+        } else {
             tasks.forEach(task -> taskRepository.deleteById(task.getId()));
         }
 
