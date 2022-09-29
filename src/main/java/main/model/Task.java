@@ -1,41 +1,39 @@
 package main.model;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Table (name = "task_tab")
+@Data
+@Accessors(chain = true)
+@Table(name = "task_tab")
 public class Task {
-
-    public Task(String title) {
-        this.title = title;
-        this.dateTimeOfCreate = LocalDateTime.now();    // это поле будет скрыто от юзера, однако будет храниться в базе
-    }
-
-    public Task() {
-        this.dateTimeOfCreate = LocalDateTime.now();
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotBlank
     private String title;
 
-    @Column(name = "date_time_of_create")
-    private LocalDateTime dateTimeOfCreate;
+    @UpdateTimestamp
+    @Column(name = "date_of_create")
+    private LocalDate dateOfCreate;
 
     @ManyToOne
-    @JoinColumn (name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Task setId(Long id) {
+    public Task setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -58,11 +56,4 @@ public class Task {
         return this;
     }
 
-    public LocalDateTime getDateTimeOfCreate() {
-        return dateTimeOfCreate;
-    }
-
-    public void setDateTimeOfCreate(LocalDateTime dateTimeOfCreate) {
-        this.dateTimeOfCreate = dateTimeOfCreate;
-    }
 }

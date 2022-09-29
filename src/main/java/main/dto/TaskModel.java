@@ -9,16 +9,16 @@ import javax.validation.constraints.NotBlank;
 @Accessors(chain = true)
 public class TaskModel {
 
-    private Long id;
+    private Integer id;
 
     @NotBlank
     private String title;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public TaskModel setId(Long id) {
+    public TaskModel setId(Integer id) {
         this.id = id;
         return this;
     }

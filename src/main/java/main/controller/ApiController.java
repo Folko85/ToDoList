@@ -38,7 +38,7 @@ public class ApiController {
 
     @GetMapping("/api/tasks/{id}")
     @PreAuthorize("hasAuthority('user:write')")
-    public TaskModel getTaskById(@PathVariable Long id) {
+    public TaskModel getTaskById(@PathVariable Integer id) {
         return TaskMapper.map(service.findById(id));
     }
 
@@ -56,7 +56,7 @@ public class ApiController {
 
     @DeleteMapping("/api/tasks/{id}")
     @PreAuthorize("hasAuthority('user:write')")
-    public void deleteTaskById(@PathVariable Long id) {
+    public void deleteTaskById(@PathVariable Integer id) {
         service.deleteById(id);
     }
 

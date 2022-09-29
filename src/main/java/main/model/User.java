@@ -16,13 +16,13 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "user_tab", schema = "public")
+@Table(name = "user_tab")
 @Accessors(chain = true)
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String username;
 

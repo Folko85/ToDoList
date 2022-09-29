@@ -29,7 +29,7 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-    public Task findById(Long id) {
+    public Task findById(Integer id) {
         return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task is not exist"));
     }
 
@@ -44,7 +44,7 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         if (taskRepository.findById(id).isEmpty()) {
             throw new EntityNotFoundException("Task is not exist");
         } else taskRepository.deleteById(id);

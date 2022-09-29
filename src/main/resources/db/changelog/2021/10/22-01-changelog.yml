@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -18,31 +18,48 @@ databaseChangeLog:
               - column:
                   name: password
                   type: varchar(255)
-        - createSequence:
-            sequenceName: user_seq
-            startValue: 1
+              - column:
+                  name: firstname
+                  type: varchar(255)
+                  defaultOnNull: true
+                  defaultValue: Иван
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lastname
+                  type: varchar(255)
+                  defaultOnNull: true
+                  defaultValue: Иванов
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(50)
+                  defaultValue: USER
+                  defaultOnNull: true
+                  constraints:
+                    nullable: false
         - createTable:
             tableName: task_tab
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
               - column:
-                  name: date_time_of_create
-                  type: datetime
+                  name: date_of_create
+                  type: date
+                  constraints:
+                    nullable: false
               - column:
                   name: title
                   type: varchar(255)
               - column:
                   name: user_id
-                  type: bigint
+                  type: int
                   constraints:
                     foreignKeyName: user_for_task
                     referencedTableName: user_tab
                     referencedColumnNames: id
-        - createSequence:
-            sequenceName: task_seq
-            startValue: 1

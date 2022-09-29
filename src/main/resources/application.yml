@@ -1,10 +1,10 @@
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:chat.db
+    url: jdbc:sqlite:todo.db
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     database-platform: main.config.sqlite.SQLiteDialect
   liquibase:
     change-log: classpath:db/changelog/changelog.yml
