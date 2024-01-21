@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
-public class ApiControllerTest extends AbstractTest {
+public class ApiControllerTest extends AbstractIntegrationTest {
 
     @Autowired
     private TaskRepository taskRepository;                //в тестовом классе конструкторов нельзя
