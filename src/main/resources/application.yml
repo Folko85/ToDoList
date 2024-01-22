@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ec2-54-74-14-109.eu-west-1.compute.amazonaws.com:5432/db7o56opi8bm4
+    url: jdbc:postgresql://localhost:5432/mytodo
     driver-class-name: org.postgresql.Driver
-    username: ENC(L4yGnaJSXQpIOzS6lmsOQFHc6CI19YQB)
-    password: ENC(C34z7UypYNYt2GImzXnoNrL4xvPmYGF+vcLObiowM1DzzQM37jTiZfnF4wGmU6Pc8ErY71jw5zS/HJ9v+vJfWKa/r/LBsmZCpZhIBBAlsBk=)
+    username: user
+    password: password
   jpa:
     hibernate:
       ddl-auto: validate
   liquibase:
     change-log: classpath:db/changelog/changelog.yml
 server:
-  port : 5000
+  port : 8080

@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: postgres
+    image: "postgres:14"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mytodo
+    ports:
+      - "5432:5432"
