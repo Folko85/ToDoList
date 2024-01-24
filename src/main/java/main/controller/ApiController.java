@@ -1,9 +1,10 @@
 package main.controller;
 
-import main.dto.TaskModel;
-import main.mapper.TaskMapper;
-import main.repository.UserRepository;
-import main.service.TaskService;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,27 +14,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.security.Principal;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import main.dto.TaskModel;
+import main.mapper.TaskMapper;
+import main.repository.UserRepository;
+import main.service.TaskService;
 
 @RestController
+@RequiredArgsConstructor
 public class ApiController {
 
     private final TaskService service;
 
     private final UserRepository userRepository;
 
-    public ApiController(TaskService service, UserRepository userRepository) {
-        this.service = service;
-        this.userRepository = userRepository;
-    }
-
     @GetMapping("/api/tasks")
     @PreAuthorize("hasAuthority('user:write')")
-    public List<TaskModel> getTasks(Principal principal) {
-        return service.findAll(principal).stream().map(TaskMapper::map).collect(Collectors.toList());
+    public List<TaskModel> getTasks() {
+        return service.findAll().stream().map(TaskMapper::map).collect(Collectors.toList());
     }
 
     @GetMapping("/api/tasks/{id}")

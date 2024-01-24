@@ -1,20 +1,21 @@
 package main.service;
 
 
-import main.exception.EntityNotFoundException;
-import main.model.Task;
-import main.model.User;
-import main.repository.TaskRepository;
-import main.repository.UserRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.stream.Collectors;
+import main.exception.EntityNotFoundException;
+import main.model.Task;
+import main.model.User;
+import main.repository.TaskRepository;
+import main.repository.UserRepository;
 
 
 @Service
@@ -33,8 +34,10 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task is not exist"));
     }
 
-    public List<Task> findAll(Principal principal) {
-        User user = userRepository.findByUsername(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("Нет такого пользователя"));
+    public List<Task> findAll() {
+        User user = (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .orElseThrow(() -> new UsernameNotFoundException("Нет такого пользователя"))
+                .getPrincipal();
         return taskRepository.findAll().stream().filter(task -> task.getUser() != null)
                 .filter(t -> t.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());
