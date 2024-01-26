@@ -35,11 +35,11 @@ public class TaskService {
     }
 
     public List<Task> findAll() {
-        User user = (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+        UserDetails user = (UserDetails) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .orElseThrow(() -> new UsernameNotFoundException("Нет такого пользователя"))
                 .getPrincipal();
         return taskRepository.findAll().stream().filter(task -> task.getUser() != null)
-                .filter(t -> t.getUser().getId().equals(user.getId()))
+                .filter(t -> t.getUser().getUsername().equals(user.getUsername()))
                 .collect(Collectors.toList());
     }
 
